@@ -22,24 +22,11 @@ kubectl autoscale deployment nginx-deploy --cpu-percent=70 --min=2 --max=8 -n we
 Note: Requires Metrics Server for CPU metrics collection.
 
 Step 6 - ResourceQuota
-YAML File: webapp-quota.yaml
----
-apiVersion: v1
-kind: ResourceQuota
-metadata:
-  name: webapp-quota
-  namespace: web-app
-spec:
-  hard:
-    pods: "10"
-    requests.cpu: "2"
-    requests.memory: 2Gi
-    limits.cpu: "4"
-    limits.memory: 4Gi
+YAML File: webapp-quota.yml
 ---
 Command to apply:
-kubectl apply -f webapp-quota.yaml
-
+kubectl apply -f webapp-quota.yml
+---
 Step 7 - Rolling Update (Update Deployment Image)
 Command:
 kubectl set image deployment/nginx-deploy nginx=nginx:1.27 -n web-app
@@ -66,11 +53,3 @@ CPU Limits:
 - Maximum CPU a pod can use before throttling.
 - Enforced at runtime by the container runtime.
 
-Example:
-resources:
-  requests:
-    cpu: "500m"
-  limits:
-    cpu: "1"
-
-End of Lab Summary.
