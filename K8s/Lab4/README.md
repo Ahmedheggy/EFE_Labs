@@ -23,10 +23,10 @@ Note: Requires Metrics Server for CPU metrics collection.
 
 Step 6 - ResourceQuota
 YAML File: webapp-quota.yml
----
+
 Command to apply:
 kubectl apply -f webapp-quota.yml
----
+
 Step 7 - Rolling Update (Update Deployment Image)
 Command:
 kubectl set image deployment/nginx-deploy nginx=nginx:1.27 -n web-app
