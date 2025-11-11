@@ -1,0 +1,3 @@
+[submodule "Jenkins/nodejs-docker-task"]
+	path = Jenkins/nodejs-docker-task
+	url = git@github.com:Ahmedheggy/Node.js-Docker-Jenkins-Pipeline.git
