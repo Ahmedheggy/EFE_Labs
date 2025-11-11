@@ -1,0 +1,41 @@
+---
+- name: Package management playbook
+  hosts: all
+  become: true
+
+  vars:
+    web_package: nginx
+    tools:
+      - git
+      - curl
+      - vim
+      - nginx
+
+  tasks:
+
+    - name: Remove the main web package
+      ansible.builtin.package:
+        name: "{{ web_package }}"
+        state: absent
+
+    - name: Install tools (loop over tools list)
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ tools }}"
+
+    - name: Start and enable the web service
+      ansible.builtin.service:
+        name: "{{ web_package }}"
+        state: started
+        enabled: true
+
+    - name: Check web package version (register output)
+      ansible.builtin.command: "{{ web_package }} -v"
+      register: web_version
+      ignore_errors: true
+      changed_when: false
+
+    - name: Show web package version
+      ansible.builtin.debug:
+        var: web_version
