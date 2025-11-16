@@ -1,12 +1,10 @@
-# Deploying EC2 Instances Behind an Application Load Balancer
+# 🚀 Deploying EC2 Instances Behind an Application Load Balancer
 
 > A project demonstrating how to build a high-availability, fault-tolerant web infrastructure on AWS. This setup uses a VPC, private/public subnets, EC2 instances, and an Application Load Balancer (ALB) to distribute traffic evenly across instances in multiple Availability Zones (AZs).
 
-
-
 ---
 
-##  Key Technologies
+## 🛠️ Key Technologies
 * **AWS VPC:** Virtual Private Cloud
 * **AWS EC2:** Elastic Compute Cloud
 * **AWS ALB:** Application Load Balancer
@@ -15,7 +13,7 @@
 
 ---
 
-## Setup Process
+## ⚙️ Setup Process
 
 ### 1. Creating the VPC
 * A new **VPC** was created to provide an isolated network environment.
@@ -56,7 +54,13 @@ Two main security groups were established:
 
 ### 7. Testing Traffic Distribution
 * The ALB provides a single DNS endpoint (e.g., `my-alb-dns-name.us-east-1.elb.amazonaws.com`).
-* Accessing this URL in a browser multiple times (refreshing) showed the content from **EC2 Instance A** and **EC2 Instance B** alternately, confirming that traffic was being distributed.
+* Accessing this URL in a browser multiple times confirms that the load balancer is distributing traffic. As shown below, refreshing the page routes the request to a different instance each time.
+
+**Request 1: Served by Instance A**
+<img src="images/Result1.png" alt="Result from Instance A" width="700"/>
+
+**Request 2 (after refresh): Served by Instance B**
+<img src="images/Result2.png" alt="Result from Instance B" width="700"/>
 
 ### 8. Final Submission
 * Verified that the **Target Group** health checks were passing for both instances.
@@ -64,7 +68,7 @@ Two main security groups were established:
 
 ---
 
-##  Results
+## ✅ Results
 * **High Availability:** The load balancer successfully distributed traffic across EC2 instances in multiple AZs.
 * **Fault Tolerance:** The application remains available even if one EC2 instance or an entire Availability Zone fails.
 * **Security:** EC2 instances are not directly exposed to the internet on `Port 80`; all web traffic is securely proxied through the ALB.
@@ -72,7 +76,7 @@ Two main security groups were established:
 
 ---
 
-##  Challenges and Solutions
+## 💡 Challenges and Solutions
 
 ### Health Check Issue
 * **Challenge:** Initially, the instances were failing their health checks and being marked as "unhealthy" by the Target Group.
