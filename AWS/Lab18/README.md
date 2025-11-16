@@ -58,11 +58,14 @@ Two main security groups were established:
 
 
 **Request 1: Served by Instance A**
-<img src="Imgs/Result1.png" alt="Result from Instance A" width="500"/>
+<img src="Imgs/Result1.png" alt="Result from Instance A" width="600"/>
+
+
+
 
 
 **Request 2 (after refresh): Served by Instance B**
-<img src="Imgs/Result2.png" alt="Result from Instance B" width="500"/>
+<img src="Imgs/Result2.png" alt="Result from Instance B" width="600"/>
 
 ### 8. Final Submission
 * Verified that the **Target Group** health checks were passing for both instances.
