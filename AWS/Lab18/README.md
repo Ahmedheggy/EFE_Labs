@@ -56,11 +56,13 @@ Two main security groups were established:
 * The ALB provides a single DNS endpoint (e.g., `my-alb-dns-name.us-east-1.elb.amazonaws.com`).
 * Accessing this URL in a browser multiple times confirms that the load balancer is distributing traffic. As shown below, refreshing the page routes the request to a different instance each time.
 
+
 **Request 1: Served by Instance A**
-<img src="Imgs/Result1.png" alt="Result from Instance A" width="700"/>
+<img src="Imgs/Result1.png" alt="Result from Instance A" width="500"/>
+
 
 **Request 2 (after refresh): Served by Instance B**
-<img src="Imgs/Result2.png" alt="Result from Instance B" width="700"/>
+<img src="Imgs/Result2.png" alt="Result from Instance B" width="500"/>
 
 ### 8. Final Submission
 * Verified that the **Target Group** health checks were passing for both instances.
