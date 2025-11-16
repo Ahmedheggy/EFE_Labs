@@ -1,89 +1,79 @@
-Deploying EC2 Instances Behind an Application Load Balancer
+# Deploying EC2 Instances Behind an Application Load Balancer
 
-Introduction
+> A project demonstrating how to build a high-availability, fault-tolerant web infrastructure on AWS. This setup uses a VPC, private/public subnets, EC2 instances, and an Application Load Balancer (ALB) to distribute traffic evenly across instances in multiple Availability Zones (AZs).
 
-load balancing infrastructure was set up on AWS using a VPC, EC2 Instances, and an Application Load Balancer (ALB). The goal was to distribute traffic evenly across EC2 Instances located in Multiple Availability Zones (AZs) to ensure high availability and fault tolerance.
 
-Steps Taken
 
-1. Creating the VPC
+---
 
-A new VPC was created to act as the isolated network environment hosting all resources.
+##  Key Technologies
+* **AWS VPC:** Virtual Private Cloud
+* **AWS EC2:** Elastic Compute Cloud
+* **AWS ALB:** Application Load Balancer
+* **AWS Security Groups:** Virtual Firewalls
+* **Apache/Nginx:** Web Server
 
-The VPC was configured with Subnets in Multiple Availability Zones (AZs).
+---
 
-Route Tables were set up to enable communication between Subnets.
+## Setup Process
 
-2. Setting Up Subnets
+### 1. Creating the VPC
+* A new **VPC** was created to provide an isolated network environment.
+* The VPC was configured with subnets spanning **Multiple Availability Zones (AZs)** for high availability.
+* **Route Tables** were set up to control traffic flow between subnets.
 
-Public Subnets were created in two AZs:
+### 2. Setting Up Subnets
+* **Public Subnets** were created in two different Availability Zones (e.g., `us-east-1a` and `us-east-1b`).
+* Route Tables for public subnets were configured with a route to an **Internet Gateway** (`0.0.0.0/0 -> igw-id`) to allow internet access.
 
-Public Subnet in AZ-1.
+### 3. Creating Security Groups
+Two main security groups were established:
 
-Public Subnet in AZ-2.
+* **ALB Security Group (`sg-alb`)**:
+    * **Inbound:** Allowed HTTP traffic on `Port 80` from all sources (`0.0.0.0/0`).
+    * **Outbound:** Allowed all traffic.
 
-Route Tables were configured to allow internet access via Internet Gateway.
+* **EC2 Instance Security Group (`sg-ec2`)**:
+    * **Inbound (HTTP):** Allowed traffic on `Port 80` **only** from the `sg-alb` security group. This ensures all web traffic comes through the load balancer.
+    * **Inbound (SSH):** Allowed traffic on `Port 22` **only** from a specific IP (e.g., `My IP`) for secure management.
 
-3. Creating Security Groups
+### 4. Setting Up EC2 Instances
+* Launched two **EC2 Instances** (e.g., t2.micro) and placed one in each public subnet (AZ-1 and AZ-2).
+* Installed **Apache** (or Nginx) on each instance to serve a simple web page.
+* Ensured the web server was running and accessible on `Port 80`.
 
-Security Group for ALB:
+### 5. Creating the Application Load Balancer (ALB)
+* An **Application Load Balancer** was created, configured to be internet-facing.
+* It was mapped to the public subnets in both AZ-1 and AZ-2.
+* A **Listener** was configured for `HTTP` on `Port 80`, forwarding traffic to a new Target Group.
 
-Configured to allow inbound traffic on Port 80 (HTTP) from all sources (0.0.0.0/0).
+### 6. Creating the Target Group
+* A **Target Group** was created for the EC2 instances.
+* **Protocol:** `HTTP`
+* **Port:** `80`
+* **Health Checks:** Configured to check the `HTTP` path `/` (the root of the website) on `Port 80`.
+* Both EC2 instances were registered as targets.
 
-Security Group for EC2 Instances:
+### 7. Testing Traffic Distribution
+* The ALB provides a single DNS endpoint (e.g., `my-alb-dns-name.us-east-1.elb.amazonaws.com`).
+* Accessing this URL in a browser multiple times (refreshing) showed the content from **EC2 Instance A** and **EC2 Instance B** alternately, confirming that traffic was being distributed.
 
-Configured to allow inbound traffic on Port 80 (HTTP) only from the ALB Security Group.
+### 8. Final Submission
+* Verified that the **Target Group** health checks were passing for both instances.
+* Tested fault tolerance by stopping one instance and confirming that all traffic was automatically routed to the remaining healthy instance.
 
-Added an SSH rule (Port 22) allowing access from my IP (My IP only).
+---
 
-4. Setting Up EC2 Instances
+##  Results
+* **High Availability:** The load balancer successfully distributed traffic across EC2 instances in multiple AZs.
+* **Fault Tolerance:** The application remains available even if one EC2 instance or an entire Availability Zone fails.
+* **Security:** EC2 instances are not directly exposed to the internet on `Port 80`; all web traffic is securely proxied through the ALB.
+* **Health Checks:** Only healthy instances receive traffic, preventing users from encountering errors.
 
-EC2 Instances were launched in two Availability Zones.
+---
 
-Apache or Nginx was installed on each EC2 Instance to serve static content over HTTP:
+##  Challenges and Solutions
 
-EC2 Instance A in AZ-1.
-
-EC2 Instance B in AZ-2.
-
-5. Creating the Application Load Balancer (ALB)
-
-An Application Load Balancer (ALB) was created to distribute traffic to the EC2 Instances in Multiple Availability Zones.
-
-A Listener was configured for Port 80 (HTTP).
-
-The ALB was linked to a Target Group that includes EC2 Instances A and B.
-
-Health checks were configured to ensure that only healthy EC2 Instances receive traffic.
-
-6. Creating the Target Group for EC2 Instances
-
-EC2 Instances were added to a Target Group.
-
-Health Checks were configured for the Target Group to check the health of the instances.
-
-The Health Check was set to HTTP with a Path of / on Port 80.
-
-7. Testing Traffic Distribution
-
-The ALB URL was tested in the browser to ensure traffic is correctly routed to EC2 Instance A and EC2 Instance B.
-
-Verified that the ALB distributes traffic equally between the two EC2 Instances.
-
-8. Final Submission
-
-Final tests were conducted to ensure traffic distribution was functioning properly.
-
-Verified that Health Checks were passing and the EC2 Instances were functioning correctly.
-
-Results:
-
-The Load Balancer was successfully configured to distribute traffic across EC2 Instances located in Multiple Availability Zones.
-
-The application was made fault-tolerant, ensuring it remains available even if one Availability Zone fails.
-
-Verified that traffic is routed only to healthy EC2 Instances.
-
-Challenges and Solutions
-
-Health Check Issue: Encountered some challenges configuring the Health Check correctly. This was resolved by ensuring the Path in the Health Check pointed to the correct endpoint on the EC2 Instances.
+### Health Check Issue
+* **Challenge:** Initially, the instances were failing their health checks and being marked as "unhealthy" by the Target Group.
+* **Solution:** This was resolved by ensuring the **Health Check Path** (`/`) in the Target Group settings correctly matched a valid page on the Apache server. In this case, the default `index.html` page satisfied the check. It's also crucial to ensure the `sg-ec2` security group allows traffic from the ALB.
