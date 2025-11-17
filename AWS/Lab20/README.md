@@ -1,5 +1,4 @@
-# Route 53 Private Hosted Zone Setup (heggy.com)
-![Architecture Diagram](img/result.png)
+# Route 53 Private Hosted Zone Setup
 
 ## Overview
 
@@ -71,10 +70,9 @@ Keep default:\
 
 ## 4. Result
 
--  EC2 instance A can reach EC2 B with the assigned Domain in route53 host & vice versa
+- Each EC2 Can reach the other using the DNS 
 
-    ping a.heggy.com
-    ping b.heggy.com
+![](Imgs/result.png)
 
 
 ------------------------------------------------------------------------
