@@ -1,10 +1,10 @@
-# 🚀 Deploying EC2 Instances Behind an Application Load Balancer
+# Deploying EC2 Instances Behind an Application Load Balancer
 
 > A project demonstrating how to build a high-availability, fault-tolerant web infrastructure on AWS. This setup uses a VPC, private/public subnets, EC2 instances, and an Application Load Balancer (ALB) to distribute traffic evenly across instances in multiple Availability Zones (AZs).
 
 ---
 
-## 🛠️ Key Technologies
+## Key Technologies
 * **AWS VPC:** Virtual Private Cloud
 * **AWS EC2:** Elastic Compute Cloud
 * **AWS ALB:** Application Load Balancer
@@ -13,7 +13,7 @@
 
 ---
 
-## ⚙️ Setup Process
+## Setup Process
 
 ### 1. Creating the VPC
 * A new **VPC** was created to provide an isolated network environment.
@@ -58,14 +58,12 @@ Two main security groups were established:
 
 
 **Request 1: Served by Instance A**
-<img src="Imgs/Result1.png" alt="Result from Instance A" width="600"/>
-
-
-
+![](Imgs/Result1.png)
 
 
 **Request 2 (after refresh): Served by Instance B**
-<img src="Imgs/Result2.png" alt="Result from Instance B" width="600"/>
+![](Imgs/Result2.png)
+
 
 ### 8. Final Submission
 * Verified that the **Target Group** health checks were passing for both instances.
@@ -73,7 +71,7 @@ Two main security groups were established:
 
 ---
 
-## ✅ Results
+## Results
 * **High Availability:** The load balancer successfully distributed traffic across EC2 instances in multiple AZs.
 * **Fault Tolerance:** The application remains available even if one EC2 instance or an entire Availability Zone fails.
 * **Security:** EC2 instances are not directly exposed to the internet on `Port 80`; all web traffic is securely proxied through the ALB.
@@ -81,7 +79,7 @@ Two main security groups were established:
 
 ---
 
-## 💡 Challenges and Solutions
+## Challenges and Solutions
 
 ### Health Check Issue
 * **Challenge:** Initially, the instances were failing their health checks and being marked as "unhealthy" by the Target Group.
