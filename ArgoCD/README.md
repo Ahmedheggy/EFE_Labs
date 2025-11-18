@@ -1,6 +1,7 @@
 # ArgoCD NGINX Deployment Lab
 
 ## Objective
+
 Install ArgoCD on a Kubernetes cluster and deploy an NGINX application using YAML manifests from the GitHub repository
 
 ## Lab Requirements
