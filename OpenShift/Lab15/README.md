@@ -29,4 +29,4 @@ After running the Job, verify the following:
 ![](result.png)
 
 ## Cleanup
-After verification, make sure to remove all resources created during this lab to keep your environment clean.
+After verification, make sure to remove all resources created during this lab to keep your environment clean
