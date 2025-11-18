@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: root-check-job
+spec:
+  template:
+    spec:
+      serviceAccountName: job-admin
+      containers:
+      - name: root-container
+        image: busybox
+        command: ["whoami"]
+      restartPolicy: Never
+  backoffLimit: 0
