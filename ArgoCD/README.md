@@ -1,7 +1,6 @@
 # ArgoCD NGINX Deployment Lab
 
 ## Objective
-
 Install ArgoCD on a Kubernetes cluster and deploy an NGINX application using YAML manifests from the GitHub repository
 
 ## Lab Requirements
@@ -68,4 +67,4 @@ kubectl get all -n default
 ## Expected Deliverables
 - A working ArgoCD dashboard showing the deployed NGINX application.
 - Application state marked as Synced and Healthy.
-![](result.png)
+![](img/result.png)
